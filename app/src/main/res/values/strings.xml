@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">#HowWeDance</string>
+    <string name="title">Únete a la experiencia #HowWeDance</string>
+    <string name="search">Buscar</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="name">Nombre</string>
+    <string name="titulo">Título</string>
+    <string name="date">Fecha</string>
+    <string name="location">Ubicación</string>
+    <string name="correo">Correo Electrónico</string>
+    <string name="documento">Cédula</string>
+    <string name="celular">Celular</string>
+    <string name="terminos">He leído y acepto los términos, condiciones y la política de privacidad. </string>
+    <string name="button_login">Iniciar Sesión</string>
+    <string name="button_register">¿No tienes cuenta? Registrate</string>
+    <string name="button_join">Registrarme</string>
+    <string name="button_photo">Subir Foto</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_logout">Cerrar sesión</string>
+    <string name="action_password">Cambiar contraseña</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="acuerdos">Para registrarse, debes aceptar los términos, condiciones y la política de privacidad. </string>
+    <string name="validacion">Por favor rellena todos los campos. </string>
+    <string name="error_login">Usuario y/o contraseña inválidos. </string>
+
+    <string name="nombrePreferences">nombrePreferences</string>
+    <string name="userPreferences">userPreferences</string>
+    <string name="correoPreferences">correoPreferences</string>
+    <string name="cedulaPreferences">cedulaPreferences</string>
+    <string name="passPreferences">passPreferences</string>
+    <string name="celularPreferences">celularPreferences</string>
+</resources>

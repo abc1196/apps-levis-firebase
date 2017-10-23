@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.levishowwedance.Controlador.ProfileFragment"
+    android:background="@color/white">
+
+    <LinearLayout android:id="@+id/headerone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView android:id="@+id/userText"
+            style="@style/userText"
+            android:layout_weight="2"
+            android:text="Usuario"/>
+
+
+        <TextView android:id="@+id/numPhotos"
+            style="@style/userText"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:text="0"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/headertwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/border"
+        android:layout_below="@id/headerone">
+        <TextView android:id="@+id/correoText"
+            style="@style/correoText"
+            android:layout_width="1dp"
+            android:layout_weight="2"
+            android:layout_marginBottom="8dp"
+            android:text="usuario@gmail.com"/>
+
+
+        <TextView android:id="@+id/posts"
+            style="@style/correoText"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:text="Publicaciones"
+            android:layout_marginBottom="8dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:src="@drawable/levis" />
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headertwo"/>
+
+    <ImageView
+        android:id="@+id/expanded_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

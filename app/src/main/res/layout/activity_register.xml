@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.levishowwedance.Controlador.RegisterActivity">
+
+    <TextView android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:textSize="24dp"
+        android:layout_margin="16dp"
+        android:textStyle="bold"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_nameR"
+        style="@style/EditTextHintNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title">
+        <EditText android:id="@+id/edit_name"
+            style="@style/Text_Edit"
+            android:hint="@string/name"
+            android:inputType="text"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_userR"
+        style="@style/EditTextHintNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_nameR">
+        <EditText android:id="@+id/edit_user"
+            style="@style/Text_Edit"
+            android:hint="@string/username"
+            android:inputType="text"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_emailR"
+        style="@style/EditTextHintNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_userR">
+        <EditText android:id="@+id/edit_email"
+            style="@style/Text_Edit"
+            android:hint="@string/correo"
+            android:inputType="text"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_documentoR"
+        style="@style/EditTextHintNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_emailR">
+        <EditText android:id="@+id/edit_documento"
+            style="@style/Text_Edit"
+            android:hint="@string/documento"
+            android:inputType="text"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_telefonoR"
+        style="@style/EditTextHintNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_documentoR">
+        <EditText android:id="@+id/edit_telefono"
+            style="@style/Text_Edit"
+            android:hint="@string/celular"
+            android:inputType="number"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_passwordR"
+        style="@style/EditTextHintNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_telefonoR">
+        <EditText android:id="@+id/edit_password"
+            style="@style/Text_Edit"
+            android:hint="@string/password"
+            android:inputType="textPassword"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_passwordR"
+        android:text="@string/terminos"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp"
+        android:onClick="desplegarTerminos"/>
+
+    <Button android:id="@+id/button_loginR"
+        style="@style/button"
+        android:layout_below="@id/checkBox"
+        android:layout_marginTop="10dp"
+        android:text="@string/button_join"
+        />
+
+</RelativeLayout>

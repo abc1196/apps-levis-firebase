@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.levishowwedance.Controlador.LoginActivity">
+
+     <ImageView android:id="@+id/title"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/title"
+         android:adjustViewBounds="true"
+         android:layout_marginBottom="4dp"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_username"
+        style="@style/EditTextHintNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title">
+        <EditText android:id="@+id/edit_username"
+            style="@style/Text_Edit"
+            android:hint="@string/username"
+            android:inputType="text"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_password"
+        style="@style/EditTextHintNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_username">
+        <EditText android:id="@+id/edit_password"
+            style="@style/Text_Edit"
+            android:hint="@string/password"
+            android:inputType="textPassword"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <Button android:id="@+id/button_login"
+        style="@style/button"
+        android:layout_below="@id/input_layout_password"
+        android:text="@string/button_login"
+        android:onClick="login"/>
+
+    <Button android:id="@+id/button_register"
+        style="@style/button_register"
+        android:layout_alignParentBottom="true"
+        android:text="@string/button_register"
+        android:onClick="register" />
+</RelativeLayout>
