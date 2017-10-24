@@ -34,6 +34,8 @@ import com.example.levishowwedance.Custom.DB;
 import com.example.levishowwedance.Custom.DataBase;
 import com.example.levishowwedance.Modelo.Usuario;
 import com.example.levishowwedance.R;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
     private final static int REQUEST_IMAGE_CAPTURE=1;
     public final static String Photo_Bitmap="Photo_Bitmap";
 
+    private FirebaseAuth mAuth;
     private SharedPreferences sharedPref;
     private ViewPager mViewPager;
     private Toolbar mToolbar;
@@ -73,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
             String cedula=sharedPref.getString(R.string.cedulaPreferences+"",null);
             String celular=sharedPref.getString(R.string.celularPreferences+"",null);
             String password=sharedPref.getString(R.string.passPreferences+"",null);
-
+            mAuth = FirebaseAuth.getInstance();
             user= new Usuario(nombre,usuarioActual,correo,cedula,celular,password);
 
         }
@@ -132,6 +135,8 @@ public class HomeActivity extends AppCompatActivity {
                         user = null;
 
                         editor.commit();
+                        mAuth.signOut();
+                        LoginManager.getInstance().logOut();
                         startActivity(new Intent(getActivity(),LoginActivity.class));
                         finish();
                     }

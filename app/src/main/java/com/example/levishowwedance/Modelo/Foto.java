@@ -1,12 +1,14 @@
 package com.example.levishowwedance.Modelo;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Created by Juan K on 14/09/2017.
  */
-
+@IgnoreExtraProperties
 public class Foto {
     private String titulo;
     private String fecha;
@@ -14,6 +16,9 @@ public class Foto {
     private String username;
     private String ubicacion;
 
+    public Foto(){
+
+    }
 
     public Foto(String username, String titulo, String ubicacion, String fecha, String direccion) {
 

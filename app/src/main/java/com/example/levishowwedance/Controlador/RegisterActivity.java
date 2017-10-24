@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,6 +41,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     DB baseDatos;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         button_loginR.setOnClickListener(this);
 
          intent = getIntent();
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+
         nuevo = null;
     }
 
@@ -77,7 +85,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                         nuevo = new Usuario(nombre,user,email,documento,telefono,password);
                         try {
-                            baseDatos.insertarUsuario(nuevo);
+                           // baseDatos.insertarUsuario(nuevo);
+
                             mAuth.createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                                         @Override
@@ -87,12 +96,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             // the auth state listener will be notified and logic to handle the
                                             // signed in user can be handled in the listener.
                                             if (!task.isSuccessful()) {
+
                                                 Toast.makeText(getApplicationContext(),"Error en el registro. Intente de nuevo.",
                                                         Toast.LENGTH_LONG).show();
                                             }else{
 
+
                                                 Toast.makeText(getApplicationContext(),"Registro exitoso. Bienvenido!.",
                                                         Toast.LENGTH_LONG).show();
+                                                FirebaseUser firebaseUser= mAuth.getCurrentUser();
+                                                mFirebaseDatabase=mFirebaseInstance.getReference("usuarios");
+                                                mFirebaseDatabase.child(firebaseUser.getUid()).setValue(nuevo);
                                                 getActivity().finish();
                                             }
 
@@ -100,11 +114,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         }
                                     });
                         }catch (Exception e){
+
                             Toast.makeText(getApplicationContext(),"Error en el registro. Intente de nuevo.",
                                     Toast.LENGTH_LONG).show();
                         }
 
-                        this.finish();
 
 
                     }else{

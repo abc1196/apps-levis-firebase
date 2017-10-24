@@ -1,5 +1,7 @@
 package com.example.levishowwedance.Modelo;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,7 +9,7 @@ import java.util.Date;
 /**
  * Created by Juan K on 14/09/2017.
  */
-
+@IgnoreExtraProperties
 public class Usuario {
 
     private String nombreReal;
@@ -18,6 +20,10 @@ public class Usuario {
     private String password;
 
     private ArrayList<Foto> fotos;
+
+    public Usuario(){
+
+    }
 
     public Usuario(String nombreReal, String username, String correo, String cedula, String celular, String password){
             this.nombreReal = nombreReal;

@@ -35,4 +35,8 @@
     <string name="cedulaPreferences">cedulaPreferences</string>
     <string name="passPreferences">passPreferences</string>
     <string name="celularPreferences">celularPreferences</string>
+
+    <string name="facebook_app_id">275336816309538</string>
+    <string name="fb_login_protocol_scheme">fb275336816309538</string>
+
 </resources>

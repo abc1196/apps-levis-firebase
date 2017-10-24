@@ -26,6 +26,7 @@ import java.util.Calendar;
 
 public class PhotoActivity extends AppCompatActivity {
 
+
     private SharedPreferences sharedPref;
     private ImageView imageView1;
     private String photoPath;
