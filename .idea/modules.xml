@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LevisHowWeDance.iml" filepath="$PROJECT_DIR$/LevisHowWeDance.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps-levis-firebase.iml" filepath="$PROJECT_DIR$/apps-levis-firebase.iml" />
     </modules>
   </component>
 </project>

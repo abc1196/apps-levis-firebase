@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "614466278810-qmlcpmbdu0don9qghhkhcnmf1v11asa5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.levishowwedance",
+            "certificate_hash": "35ec996784925df873f0c820710fbe90b042ac86"
+          }
+        },
+        {
           "client_id": "614466278810-6a8c4o39e7u049jd8ju0unckijb7vjan.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614466278810-6a8c4o39e7u049jd8ju0unckijb7vjan.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
