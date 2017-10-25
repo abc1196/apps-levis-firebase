@@ -21,7 +21,7 @@
         android:layout_below="@id/title">
         <EditText android:id="@+id/edit_username"
             style="@style/Text_Edit"
-            android:hint="@string/username"
+            android:hint="@string/correo"
             android:inputType="text"/>
     </android.support.design.widget.TextInputLayout>
 

@@ -3,12 +3,10 @@ package com.example.levishowwedance.Controlador;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.levishowwedance.Custom.DB;
-import com.example.levishowwedance.Custom.DataBase;
 import com.example.levishowwedance.Modelo.Usuario;
 import com.example.levishowwedance.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -95,26 +92,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             // If sign in fails, display a message to the user. If sign in succeeds
                                             // the auth state listener will be notified and logic to handle the
                                             // signed in user can be handled in the listener.
-                                            if (!task.isSuccessful()) {
-
-                                                Toast.makeText(getApplicationContext(),"Error en el registro. Intente de nuevo.",
-                                                        Toast.LENGTH_LONG).show();
-                                            }else{
-
-
+                                            if (task.isSuccessful()) {
                                                 Toast.makeText(getApplicationContext(),"Registro exitoso. Bienvenido!.",
                                                         Toast.LENGTH_LONG).show();
                                                 FirebaseUser firebaseUser= mAuth.getCurrentUser();
                                                 mFirebaseDatabase=mFirebaseInstance.getReference("usuarios");
                                                 mFirebaseDatabase.child(firebaseUser.getUid()).setValue(nuevo);
                                                 getActivity().finish();
+
+                                            }else{
+
+                                                Toast.makeText(getApplicationContext(),"Error en el registro. Intente de nuevo.",
+                                                        Toast.LENGTH_LONG).show();
+
                                             }
 
                                             // ...
                                         }
                                     });
                         }catch (Exception e){
-
+                            e.printStackTrace();
                             Toast.makeText(getApplicationContext(),"Error en el registro. Intente de nuevo.",
                                     Toast.LENGTH_LONG).show();
                         }
