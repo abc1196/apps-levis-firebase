@@ -73,6 +73,7 @@ public class PhotoActivity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         mAuth= FirebaseAuth.getInstance();
+        mFirebaseInstance = FirebaseDatabase.getInstance();
         mProgressDialog=new ProgressDialog(PhotoActivity.this);
 
         imageView1 = (ImageView) findViewById(R.id.title);
@@ -148,7 +149,7 @@ public class PhotoActivity extends AppCompatActivity {
 
 
 
-                    baseDatos.insertarFoto(foton);
+                   // baseDatos.insertarFoto(foton);
                     Intent intent= new Intent(this,HomeActivity.class);
                     this.finish();
                     startActivity(intent);

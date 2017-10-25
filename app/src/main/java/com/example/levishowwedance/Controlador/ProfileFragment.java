@@ -20,6 +20,13 @@ import com.example.levishowwedance.Custom.DataBase;
 import com.example.levishowwedance.Modelo.Foto;
 import com.example.levishowwedance.Modelo.Usuario;
 import com.example.levishowwedance.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +52,10 @@ public class ProfileFragment extends Fragment {
     SharedPreferences sharedPref;
     private RecyclerView recyclerView;
     private DB db;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseInstance;
+    private ArrayList<Foto> fotos;
     public static ProfileFragment newInstance() {
 
         return new ProfileFragment();
@@ -68,7 +79,26 @@ public class ProfileFragment extends Fragment {
             txtUser.setText(usuarioActual);
             txtCorreo.setText(correo);
             //TRAERSE LOS FOTONES DE LA BASE DE DATOS Y GUARDARLOS EN EL ARRAYLIST DEL USER
-            ArrayList<Foto> fotos=db.buscarFotosUsuario(usuarioActual);
+            mAuth= FirebaseAuth.getInstance();
+            FirebaseUser user=mAuth.getCurrentUser();
+            mFirebaseInstance = FirebaseDatabase.getInstance();
+            mFirebaseDatabase=mFirebaseInstance.getReference().child("pictures").child(user.getUid());
+            fotos= new ArrayList<Foto>();
+            mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot noteSnapshot: dataSnapshot.getChildren()){
+                        Foto foto = noteSnapshot.getValue(Foto.class);
+                        fotos.add(foto);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
             txtPublicaciones.setText(fotos.size()+"");
             Toast.makeText(getActivity(), fotos.size()+"",
                     Toast.LENGTH_LONG).show();
@@ -105,7 +135,28 @@ public class ProfileFragment extends Fragment {
             user= new Usuario(nombre,usuarioActual,correo,cedula,celular,password);
             txtUser.setText(usuarioActual);
             txtCorreo.setText(correo);
-            ArrayList<Foto> fotos=db.buscarFotosUsuario(usuarioActual);
+           // ArrayList<Foto> fotos=db.buscarFotosUsuario(usuarioActual);
+            mAuth= FirebaseAuth.getInstance();
+            FirebaseUser user=mAuth.getCurrentUser();
+            mFirebaseInstance = FirebaseDatabase.getInstance();
+            mFirebaseDatabase=mFirebaseInstance.getReference().child("pictures");
+            fotos= new ArrayList<Foto>();
+            mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot noteSnapshot: dataSnapshot.getChildren()){
+                        Foto foto = noteSnapshot.getValue(Foto.class);
+                        fotos.add(foto);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
             txtPublicaciones.setText(fotos.size()+"");
             Recycler_View_Adapter adapter = new Recycler_View_Adapter(fotos, getActivity());
             recyclerView.setAdapter(adapter);

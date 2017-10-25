@@ -148,7 +148,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         View view = inflater.inflate(R.layout.termino_condiciones_dialog, null);
         final TextView title = (TextView)view.findViewById(R.id.title_terminos);
         final TextView text = (TextView)view.findViewById(R.id.text_terminos);
-        text.setText("Al precionar a 'Acepto', nos autorizas de manejar la información proporcionada, que es: Nombre, Correo, Celular, Cédula, además" +
+        text.setText("Al presionar a 'Acepto', nos autorizas de manejar la información proporcionada, que es: Nombre, Correo, Celular, Cédula, además" +
                 " de cualquier foto subida con fines de ingresar el concurso.");
         builder.setView(view);
         builder.setPositiveButton("Acepto", null);
