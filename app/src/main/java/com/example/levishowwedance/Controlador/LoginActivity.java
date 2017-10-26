@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
 
                                 // ...
-                                /**
+
                                 FirebaseUser user=mAuth.getCurrentUser();
                                 Usuario usuario= new Usuario(user.getDisplayName(),user.getDisplayName(),user.getEmail(),user.getProviderId(),user.getPhoneNumber(),"");
                                 if (usuario != null && usuario.getPassword().equals(password)) {
@@ -140,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(getApplicationContext(), R.string.error_login,
                                             Toast.LENGTH_LONG).show();
-                                }*/
+                                }
                             }
                         }
                     });
