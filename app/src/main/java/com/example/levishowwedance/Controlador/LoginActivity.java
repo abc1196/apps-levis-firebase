@@ -1,6 +1,7 @@
 package com.example.levishowwedance.Controlador;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -65,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
+    ProgressDialog progressDialog ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             btnLogin = (Button) findViewById(R.id.button_login);
             btnRegister = (Button) findViewById(R.id.button_login);
             loginButton = (LoginButton) findViewById(R.id.login_button);
+            progressDialog = new ProgressDialog(LoginActivity.this);
             mFirebaseInstance = FirebaseDatabase.getInstance();
             mAuth = FirebaseAuth.getInstance();
             callbackManager = CallbackManager.Factory.create();
@@ -170,7 +174,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
+        // Setting progressDialog Title.
+        progressDialog.setTitle("Iniciando Sesión...");
 
+        // Showing progressDialog.
+        progressDialog.show();
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -193,6 +201,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.commit();
                             Intent intent = new Intent(getActivity(),HomeActivity.class);
                             startActivity(intent);
+                            progressDialog.dismiss();
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.

@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.levishowwedance.Modelo.Foto;
 import com.example.levishowwedance.R;
 
@@ -201,14 +202,7 @@ public class Recicler_View_Adapter_Community extends RecyclerView.Adapter<Recicl
         holder.author.setText(list.get(position).getUsername());
         holder.date.setText(list.get(position).getFecha().toString());
         holder.location.setText(list.get(position).getUbicacion());
-        Uri photoURI=Uri.fromFile(new File(list.get(position).getImagen()));
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoURI);
-            holder.imageView.setImageBitmap(bitmap);
-            holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Glide.with(context).load(list.get(position).getImagen()).into(holder.imageView);
 
         //animate(holder);
 

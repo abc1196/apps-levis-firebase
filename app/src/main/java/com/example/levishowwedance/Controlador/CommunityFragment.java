@@ -1,5 +1,6 @@
 package com.example.levishowwedance.Controlador;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,12 +45,11 @@ public class CommunityFragment extends Fragment {
     public final static String TITLE = "USUARIO";
 
     private RecyclerView recyclerView;
-    private DB db;
-
-    private FirebaseAuth mAuth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private ArrayList<Foto> fotos;
+    ProgressDialog progressDialog ;
+
     public static CommunityFragment newInstance() {
 
         return new CommunityFragment();
@@ -59,18 +59,15 @@ public class CommunityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TRAERSE LOS FOTONES DE LA BASE DE DATOS Y GUARDARLOS EN EL ARRAYLIST DEL USER
-        db= new DB(getActivity());
-        mAuth= FirebaseAuth.getInstance();
         mFirebaseInstance = FirebaseDatabase.getInstance();
-        mFirebaseDatabase=mFirebaseInstance.getReference().child("pictures").child("uid");
+        mFirebaseDatabase=mFirebaseInstance.getReference().child("pictures");
         fotos= new ArrayList<Foto>();
         mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot noteSnapshot: dataSnapshot.getChildren()){
-                    Foto foto = noteSnapshot.getValue(Foto.class);
-                    fotos.add(foto);
+                  //  Foto foto = noteSnapshot.getValue(Foto.class);
+                    //fotos.add(foto);
                 }
             }
 
@@ -79,7 +76,6 @@ public class CommunityFragment extends Fragment {
 
             }
         });
-       // ArrayList<Foto> fotos=db.buscarFotos();
        // Recicler_View_Adapter_Community adapter = new Recicler_View_Adapter_Community(fotos, getActivity());
        // recyclerView.setAdapter(adapter);
         //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -96,18 +92,29 @@ public class CommunityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_community, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
-        db= new DB(getActivity());
-        mAuth= FirebaseAuth.getInstance();
+        // Setting progressDialog Title.
+
         mFirebaseInstance = FirebaseDatabase.getInstance();
         mFirebaseDatabase=mFirebaseInstance.getReference().child("pictures");
         fotos= new ArrayList<Foto>();
+        progressDialog = new ProgressDialog(rootView.getContext());
         mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                fotos.clear();
                 for (DataSnapshot noteSnapshot: dataSnapshot.getChildren()){
                     Foto foto = noteSnapshot.getValue(Foto.class);
                     fotos.add(foto);
+                    Recicler_View_Adapter_Community adapter = new Recicler_View_Adapter_Community(fotos, getActivity());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+                    itemAnimator.setAddDuration(1000);
+                    itemAnimator.setRemoveDuration(1000);
+                    recyclerView.setItemAnimator(itemAnimator);
                 }
+
             }
 
             @Override
@@ -115,14 +122,6 @@ public class CommunityFragment extends Fragment {
 
             }
         });
-        //ArrayList<Foto> fotos=db.buscarFotos();
-        Recicler_View_Adapter_Community adapter = new Recicler_View_Adapter_Community(fotos, getActivity());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        itemAnimator.setAddDuration(1000);
-        itemAnimator.setRemoveDuration(1000);
-        recyclerView.setItemAnimator(itemAnimator);
 
         return rootView;
 

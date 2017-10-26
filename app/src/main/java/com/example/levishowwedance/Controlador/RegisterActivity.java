@@ -1,6 +1,7 @@
 package com.example.levishowwedance.Controlador;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -31,24 +32,21 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText input_layout_nameR, input_layout_userR, input_layout_emailR, input_layout_documentoR,
+    private EditText input_layout_nameR, input_layout_userR, input_layout_emailR, input_layout_documentoR,
             input_layout_telefonoR, input_layout_passwordR;
-    CheckBox checkBoxRegistro;
-    Button button_loginR;
-
-    Intent intent;
-    Usuario nuevo;
-    DB baseDatos;
-
+    private CheckBox checkBoxRegistro;
+    private Button button_loginR;
+    private Intent intent;
+    private Usuario nuevo;
     private FirebaseAuth mAuth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
+    ProgressDialog progressDialog ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        mAuth = FirebaseAuth.getInstance();
         input_layout_nameR = (EditText) findViewById(R.id.edit_name);
         input_layout_userR = (EditText) findViewById(R.id.edit_user);
         input_layout_emailR = (EditText) findViewById(R.id.edit_email);
@@ -57,13 +55,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         input_layout_passwordR = (EditText) findViewById(R.id.edit_password);
         button_loginR = (Button) findViewById(R.id.button_loginR);
         checkBoxRegistro = (CheckBox) findViewById(R.id.checkBox);
-        baseDatos= new DB(getActivity().getApplicationContext());
         button_loginR.setOnClickListener(this);
-
-         intent = getIntent();
+        intent = getIntent();
+        mAuth = FirebaseAuth.getInstance();
         mFirebaseInstance = FirebaseDatabase.getInstance();
-
         nuevo = null;
+        progressDialog = new ProgressDialog(RegisterActivity.this);
     }
 
 
@@ -85,24 +82,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                         nuevo = new Usuario(nombre,user,email,documento,telefono,password);
                         try {
-                           // baseDatos.insertarUsuario(nuevo);
+                            // Setting progressDialog Title.
+                            progressDialog.setTitle("Registrando Usuario...");
 
+                            // Showing progressDialog.
+                            progressDialog.show();
                             mAuth.createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                            // If sign in fails, display a message to the user. If sign in succeeds
-                                            // the auth state listener will be notified and logic to handle the
-                                            // signed in user can be handled in the listener.
                                             if (!task.isSuccessful()) {
 
+                                                progressDialog.dismiss();
                                                 Toast.makeText(getApplicationContext(),"Error en el registro. Intente de nuevo.",
                                                         Toast.LENGTH_LONG).show();
                                             }else{
 
-
-                                                Toast.makeText(getApplicationContext(),"Registro exitoso. Bienvenido!.",
+                                                progressDialog.dismiss();
+                                                Toast.makeText(getApplicationContext(),"Registro exitoso. Bienvenido!",
                                                         Toast.LENGTH_LONG).show();
                                                 FirebaseUser firebaseUser= mAuth.getCurrentUser();
                                                 mFirebaseDatabase=mFirebaseInstance.getReference("usuarios");
@@ -110,11 +108,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                 getActivity().finish();
                                             }
 
-                                            // ...
                                         }
                                     });
                         }catch (Exception e){
-
+                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(),"Error en el registro. Intente de nuevo.",
                                     Toast.LENGTH_LONG).show();
                         }

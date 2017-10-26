@@ -1,5 +1,6 @@
 package com.example.levishowwedance.Controlador;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,16 +48,16 @@ public class ProfileFragment extends Fragment {
     public final static String TITLE = "USUARIO";
 
     private TextView txtUser;
-    private TextView txtCorreo;
     private TextView txtPublicaciones;
     private Usuario user;
     SharedPreferences sharedPref;
     private RecyclerView recyclerView;
-    private DB db;
     private FirebaseAuth mAuth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private ArrayList<Foto> fotos;
+    ProgressDialog progressDialog ;
+
     public static ProfileFragment newInstance() {
 
         return new ProfileFragment();
@@ -77,10 +79,9 @@ public class ProfileFragment extends Fragment {
 
             user= new Usuario(nombre,usuarioActual,correo,cedula,celular,password);
             txtUser.setText(usuarioActual);
-            txtCorreo.setText(correo);
             //TRAERSE LOS FOTONES DE LA BASE DE DATOS Y GUARDARLOS EN EL ARRAYLIST DEL USER
             mAuth= FirebaseAuth.getInstance();
-            FirebaseUser user=mAuth.getCurrentUser();
+            final FirebaseUser user=mAuth.getCurrentUser();
             mFirebaseInstance = FirebaseDatabase.getInstance();
             mFirebaseDatabase=mFirebaseInstance.getReference().child("pictures").child(user.getUid());
             fotos= new ArrayList<Foto>();
@@ -88,8 +89,21 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot noteSnapshot: dataSnapshot.getChildren()){
-                        Foto foto = noteSnapshot.getValue(Foto.class);
-                        fotos.add(foto);
+                        if(noteSnapshot.child("username").getValue().equals(user.getDisplayName()))
+                        {
+                           // Foto foto = noteSnapshot.getValue(Foto.class);
+                            //fotos.add(foto);
+                            //txtPublicaciones.setText(fotos.size()+"");
+                            //Toast.makeText(getActivity(), fotos.size()+"",
+                              //      Toast.LENGTH_LONG).show();
+                           // Recycler_View_Adapter adapter = new Recycler_View_Adapter(fotos, getActivity());
+                            //recyclerView.setAdapter(adapter);
+                            //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            //RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+                            //itemAnimator.setAddDuration(1000);
+                            //itemAnimator.setRemoveDuration(1000);
+                            //recyclerView.setItemAnimator(itemAnimator);
+                        }
                     }
                 }
 
@@ -99,16 +113,7 @@ public class ProfileFragment extends Fragment {
                 }
             });
 
-            txtPublicaciones.setText(fotos.size()+"");
-            Toast.makeText(getActivity(), fotos.size()+"",
-                    Toast.LENGTH_LONG).show();
-            Recycler_View_Adapter adapter = new Recycler_View_Adapter(fotos, getActivity());
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-            itemAnimator.setAddDuration(1000);
-            itemAnimator.setRemoveDuration(1000);
-            recyclerView.setItemAnimator(itemAnimator);
+
 
         }
     }
@@ -119,9 +124,8 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
          txtUser=(TextView)rootView.findViewById(R.id.userText);
-        txtCorreo=(TextView)rootView.findViewById(R.id.correoText);
         txtPublicaciones=(TextView)rootView.findViewById(R.id.numPhotos);
-        db= new DB(getActivity());
+        progressDialog = new ProgressDialog(rootView.getContext());
         SharedPreferences pref = getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         String usuarioActual=pref.getString(R.string.userPreferences+"",null);
         if(usuarioActual!=null&&!usuarioActual.equals("")){
@@ -134,37 +138,50 @@ public class ProfileFragment extends Fragment {
 
             user= new Usuario(nombre,usuarioActual,correo,cedula,celular,password);
             txtUser.setText(usuarioActual);
-            txtCorreo.setText(correo);
-           // ArrayList<Foto> fotos=db.buscarFotosUsuario(usuarioActual);
             mAuth= FirebaseAuth.getInstance();
-            FirebaseUser user=mAuth.getCurrentUser();
+            final FirebaseUser user=mAuth.getCurrentUser();
             mFirebaseInstance = FirebaseDatabase.getInstance();
             mFirebaseDatabase=mFirebaseInstance.getReference().child("pictures");
+            // Setting progressDialog Title.
+            progressDialog.setTitle("Cargando fotos...");
+
+            // Showing progressDialog.
+            progressDialog.show();
             fotos= new ArrayList<Foto>();
+
             mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    fotos.clear();
                     for (DataSnapshot noteSnapshot: dataSnapshot.getChildren()){
-                        Foto foto = noteSnapshot.getValue(Foto.class);
-                        fotos.add(foto);
+
+                        if(noteSnapshot.child("username").getValue().equals(user.getDisplayName()))
+                        {
+
+                            Foto foto = noteSnapshot.getValue(Foto.class);
+                            fotos.add(foto);
+                            txtPublicaciones.setText(fotos.size()+"");
+                            Recycler_View_Adapter adapter = new Recycler_View_Adapter(fotos, getActivity());
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+                            itemAnimator.setAddDuration(1000);
+                            itemAnimator.setRemoveDuration(1000);
+                            recyclerView.setItemAnimator(itemAnimator);
+                        }
                     }
+                    progressDialog.dismiss();
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
+                    progressDialog.dismiss();
                 }
             });
 
 
-            txtPublicaciones.setText(fotos.size()+"");
-            Recycler_View_Adapter adapter = new Recycler_View_Adapter(fotos, getActivity());
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-            itemAnimator.setAddDuration(1000);
-            itemAnimator.setRemoveDuration(1000);
-            recyclerView.setItemAnimator(itemAnimator);
+
         }
         return rootView;
 

@@ -1,5 +1,6 @@
 package com.example.levishowwedance.Controlador;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.levishowwedance.R;
 
 import java.io.File;
@@ -19,6 +21,7 @@ public class SelectPhotoActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private ImageView imageView;
+    ProgressDialog progressDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,19 +31,13 @@ public class SelectPhotoActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         imageView=(ImageView)findViewById(R.id.image_selected);
-
+        progressDialog= new ProgressDialog(SelectPhotoActivity.this);
+        progressDialog.setTitle("Cargando Foto...");
+        progressDialog.show();
         Intent intent= getIntent();
         String ruta=intent.getStringExtra("RUTA");
-
-        Uri photoURI=Uri.fromFile(new File(ruta));
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoURI);
-            imageView.setImageBitmap(bitmap);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Glide.with(SelectPhotoActivity.this).load(ruta).centerCrop().into(imageView);
+        progressDialog.dismiss();
     }
 
     @Override

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.levishowwedance.Modelo.Foto;
 import com.example.levishowwedance.R;
 
@@ -29,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+
+import static com.facebook.places.model.PlaceFields.CONTEXT;
 
 /**
  * Created by alejo on 21/09/2017.
@@ -212,14 +215,15 @@ public class Recycler_View_Adapter extends RecyclerView.Adapter<Recycler_View_Ad
 
         }
             holder.location.setText(list.get(position).getUbicacion());
-        Uri photoURI=Uri.fromFile(new File(list.get(position).getImagen()));
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoURI);
-            holder.imageView.setImageBitmap(bitmap);
-            holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+      //  Uri photoURI=Uri.fromFile(new File(list.get(position).getImagen()));
+        //try {
+            //Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoURI);
+            Glide.with(context).load(list.get(position).getImagen()).into(holder.imageView);
+           // holder.imageView.setImageBitmap(bitmap);
+           // holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        //} catch (IOException e) {
+          //  e.printStackTrace();
+        //}
 
         //animate(holder);
 
@@ -278,7 +282,7 @@ public class Recycler_View_Adapter extends RecyclerView.Adapter<Recycler_View_Ad
                     String ruta= list.get(position).getImagen();
                     fotoGrande(ruta);
 
-                    //zoomImageFromThumb(itemView, list.get(position).getImagen());
+
                 }
             });
 

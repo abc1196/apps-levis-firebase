@@ -7,43 +7,25 @@
     tools:context="com.example.levishowwedance.Controlador.ProfileFragment"
     android:background="@color/white">
 
-    <LinearLayout android:id="@+id/headerone"
+    <RelativeLayout android:id="@+id/headerone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@drawable/border">
         <TextView android:id="@+id/userText"
             style="@style/userText"
-            android:layout_weight="2"
             android:text="Usuario"/>
 
 
         <TextView android:id="@+id/numPhotos"
             style="@style/userText"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:text="0"/>
-    </LinearLayout>
-    <LinearLayout android:id="@+id/headertwo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/border"
-        android:layout_below="@id/headerone">
-        <TextView android:id="@+id/correoText"
-            style="@style/correoText"
-            android:layout_width="1dp"
-            android:layout_weight="2"
-            android:layout_marginBottom="8dp"
-            android:text="usuario@gmail.com"/>
-
-
+            android:text="0"
+            android:layout_below="@id/userText"/>
         <TextView android:id="@+id/posts"
             style="@style/correoText"
-            android:layout_width="0dp"
-            android:layout_weight="2"
             android:text="Publicaciones"
-            android:layout_marginBottom="8dp"/>
-    </LinearLayout>
+            android:layout_marginBottom="8dp"
+            android:layout_below="@id/numPhotos"/>
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/icon"
@@ -58,7 +40,7 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/headertwo"/>
+        android:layout_below="@id/headerone"/>
 
     <ImageView
         android:id="@+id/expanded_image"

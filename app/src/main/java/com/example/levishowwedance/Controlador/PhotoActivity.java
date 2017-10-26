@@ -114,12 +114,17 @@ public class PhotoActivity extends AppCompatActivity {
                 final String location = input_location.getText().toString();
                 final String title = input_title.getText().toString();
 
-                final Foto foton = new Foto( username, title,  location,  date, photoPath);
+                // Setting progressDialog Title.
+                mProgressDialog.setTitle("Subiendo foto...");
+
+                // Showing progressDialog.
+                mProgressDialog.show();
 
 
                 final FirebaseUser user= mAuth.getCurrentUser();
                 String userID= user.getUid();
                 if(!userID.equals("")||!userID.equals(null)) {
+
                     Uri photoURI = Uri.fromFile(new File(photoPath));
                     StorageReference sref= mStorageRef.child("images/pictures"+"/"+userID+"/"+title+".jpg");
                     sref.putFile(photoURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -127,13 +132,14 @@ public class PhotoActivity extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Uri downloadUrl= taskSnapshot.getDownloadUrl();
 
-
+                            final Foto foton = new Foto( username, title,  location,  date, downloadUrl.toString());
                             mFirebaseDatabase=mFirebaseInstance.getReference("pictures");
-                            mFirebaseDatabase.child(user.getUid()).setValue(foton);
+                            String uid=mFirebaseDatabase.push().getKey();
+                            mFirebaseDatabase.child(uid).setValue(foton);
 
 
                             Toast.makeText(getApplicationContext(), "Foto subida" , Toast.LENGTH_LONG).show();
-                            mProgressDialog.dismiss();
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -152,6 +158,7 @@ public class PhotoActivity extends AppCompatActivity {
                    // baseDatos.insertarFoto(foton);
                     Intent intent= new Intent(this,HomeActivity.class);
                     this.finish();
+                    mProgressDialog.dismiss();
                     startActivity(intent);
                 }else{
                     Toast.makeText(getApplicationContext(),R.string.validacion,
@@ -160,6 +167,8 @@ public class PhotoActivity extends AppCompatActivity {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "La foto no se pudo subir" , Toast.LENGTH_LONG).show();
+            mProgressDialog.dismiss();
         }
     }
 
