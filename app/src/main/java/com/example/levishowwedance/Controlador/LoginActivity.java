@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.levishowwedance.Custom.DB;
 import com.example.levishowwedance.Modelo.Usuario;
 import com.example.levishowwedance.R;
 import com.facebook.AccessToken;
@@ -43,8 +42,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnRegister;
 
     private LoginButton loginButton ;
-
-    private DB db;
 
     private SharedPreferences sharedPref;
 
@@ -94,23 +91,22 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
             });
-            db = new DB(getActivity().getApplicationContext());
         }
     }
 
     public void login(View v){
 
         String email=txtEmail.getText().toString();
-        String password=txtPassword.getText().toString();
+        final String password=txtPassword.getText().toString();
 
         if(!email.equals("")&&!password.equals("")) {
-            Usuario usuario = db.buscarUsuario(email);
+
+
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            Toast.makeText(getApplicationContext(),"Bienvenido",
-                                    Toast.LENGTH_SHORT).show();
+
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
@@ -118,30 +114,38 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(),R.string.error_login,
                                         Toast.LENGTH_SHORT).show();
                             }
+                            else {
+                                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                                Toast.makeText(getApplicationContext(), "Bienvenido",
+                                        Toast.LENGTH_SHORT).show();
 
-                            // ...
+                                // ...
+                                /**
+                                FirebaseUser user=mAuth.getCurrentUser();
+                                Usuario usuario= new Usuario(user.getDisplayName(),user.getDisplayName(),user.getEmail(),user.getProviderId(),user.getPhoneNumber(),"");
+                                if (usuario != null && usuario.getPassword().equals(password)) {
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString(R.string.nombrePreferences + "", usuario.getNombreReal());
+                                    editor.putString(R.string.userPreferences + "", usuario.getUsername());
+                                    editor.putString(R.string.celularPreferences + "", usuario.getCelular());
+                                    editor.putString(R.string.cedulaPreferences + "", usuario.getCedula());
+                                    editor.putString(R.string.correoPreferences + "", usuario.getCorreo());
+                                    editor.putString(R.string.passPreferences + "", usuario.getPassword());
+                                    editor.commit();
+
+
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), R.string.error_login,
+                                            Toast.LENGTH_LONG).show();
+                                }*/
+                            }
                         }
                     });
 
-            if (usuario != null&&usuario.getPassword().equals(password)) {
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(R.string.nombrePreferences+"",usuario.getNombreReal());
-                editor.putString(R.string.userPreferences+"",usuario.getUsername());
-                editor.putString(R.string.celularPreferences+"",usuario.getCelular());
-                editor.putString(R.string.cedulaPreferences+"",usuario.getCedula());
-                editor.putString(R.string.correoPreferences+"",usuario.getCorreo());
-                editor.putString(R.string.passPreferences+"",usuario.getPassword());
-                editor.commit();
 
-
-
-                Intent intent = new Intent(this,HomeActivity.class);
-                startActivity(intent);
-                finish();
-           } else {
-                Toast.makeText(getApplicationContext(), R.string.error_login,
-                        Toast.LENGTH_LONG).show();
-            }
 
         }else{
             Toast.makeText(getApplicationContext(), R.string.validacion,
