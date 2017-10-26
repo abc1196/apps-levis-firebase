@@ -51,7 +51,6 @@ public class ProfileFragment extends Fragment {
     private Usuario user;
     SharedPreferences sharedPref;
     private RecyclerView recyclerView;
-    private DB db;
     private FirebaseAuth mAuth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
@@ -121,7 +120,6 @@ public class ProfileFragment extends Fragment {
          txtUser=(TextView)rootView.findViewById(R.id.userText);
         txtCorreo=(TextView)rootView.findViewById(R.id.correoText);
         txtPublicaciones=(TextView)rootView.findViewById(R.id.numPhotos);
-        db= new DB(getActivity());
         SharedPreferences pref = getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         String usuarioActual=pref.getString(R.string.userPreferences+"",null);
         if(usuarioActual!=null&&!usuarioActual.equals("")){

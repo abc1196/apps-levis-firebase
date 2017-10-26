@@ -1,16 +1,14 @@
 package com.example.levishowwedance.Controlador;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.FileProvider;
@@ -24,18 +22,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.levishowwedance.Custom.DB;
-import com.example.levishowwedance.Custom.DataBase;
 import com.example.levishowwedance.Modelo.Usuario;
 import com.example.levishowwedance.R;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,10 +76,12 @@ public class HomeActivity extends AppCompatActivity {
             String cedula=sharedPref.getString(R.string.cedulaPreferences+"",null);
             String celular=sharedPref.getString(R.string.celularPreferences+"",null);
             String password=sharedPref.getString(R.string.passPreferences+"",null);
-            mAuth = FirebaseAuth.getInstance();
+
             user= new Usuario(nombre,usuarioActual,correo,cedula,celular,password);
 
         }
+        mAuth = FirebaseAuth.getInstance();
+
         fab=(FloatingActionButton)findViewById(R.id.fab);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -182,10 +184,10 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onClick(View v){
-                        String passViejo = et_old_password.getText().toString();
-                        String passNuevo = et_new_password.getText().toString();
+                       String passViejo = et_old_password.getText().toString();
+                        final String passNuevo = et_new_password.getText().toString();
                         String passConfirm=et_confirm_password.getText().toString();
-                        if(!passViejo.equals("")&&!passNuevo.equals("")&&!passConfirm.equals("")) {
+                        /**  if(!passViejo.equals("")&&!passNuevo.equals("")&&!passConfirm.equals("")) {
                             if (user.getPassword().equals(passViejo)) {
                                 if(passNuevo.equals(passConfirm)) {
                                     baseDatos.actualizarPassword(user, passNuevo);
@@ -205,6 +207,53 @@ public class HomeActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), R.string.validacion,
                                     Toast.LENGTH_LONG).show();
                         }
+                       */
+                        if(!passViejo.equals("")&&!passNuevo.equals("")&&!passConfirm.equals("")) {
+
+                                if(passNuevo.equals(passConfirm)) {
+                                    final FirebaseUser user = mAuth.getCurrentUser();
+
+// Get auth credentials from the user for re-authentication. The example below shows
+// email and password credentials but there are multiple possible providers,
+// such as GoogleAuthProvider or FacebookAuthProvider.
+                                    AuthCredential credential = EmailAuthProvider
+                                            .getCredential(mAuth.getCurrentUser().getEmail(), passViejo);
+
+// Prompt the user to re-provide their sign-in credentials
+                                    user.reauthenticate(credential)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        user.updatePassword(passNuevo).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Toast.makeText(getApplicationContext(), "Contraseña actualizada.",
+                                                                            Toast.LENGTH_LONG).show();
+                                                                } else {
+                                                                    Toast.makeText(getApplicationContext(), "No se pudo actualizar la contraseña.",
+                                                                            Toast.LENGTH_LONG).show();
+                                                                }
+                                                            }
+                                                        });
+                                                    } else {
+                                                        Toast.makeText(getApplicationContext(), "Contraseña antigua incorrecta.",
+                                                                Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            });
+                                    dialog.dismiss();
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden.",
+                                            Toast.LENGTH_LONG).show();
+                                }
+
+                        }else{
+                            Toast.makeText(getApplicationContext(), R.string.validacion,
+                                    Toast.LENGTH_LONG).show();
+                        }
+
 
                     }
                 });

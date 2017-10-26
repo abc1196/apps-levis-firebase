@@ -125,14 +125,14 @@ public class LoginActivity extends AppCompatActivity {
 
                                 FirebaseUser user=mAuth.getCurrentUser();
                                 Usuario usuario= new Usuario(user.getDisplayName(),user.getDisplayName(),user.getEmail(),user.getProviderId(),user.getPhoneNumber(),"");
-                                if (usuario != null && usuario.getPassword().equals(password)) {
+                                if (usuario != null ) {
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putString(R.string.nombrePreferences + "", usuario.getNombreReal());
                                     editor.putString(R.string.userPreferences + "", usuario.getUsername());
                                     editor.putString(R.string.celularPreferences + "", usuario.getCelular());
                                     editor.putString(R.string.cedulaPreferences + "", usuario.getCedula());
                                     editor.putString(R.string.correoPreferences + "", usuario.getCorreo());
-                                    editor.putString(R.string.passPreferences + "", usuario.getPassword());
+                                    editor.putString(R.string.passPreferences + "", usuario.getPassword()+"");
                                     editor.commit();
 
 
