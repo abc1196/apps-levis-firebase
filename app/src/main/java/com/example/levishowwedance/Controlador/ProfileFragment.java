@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
         txtPublicaciones=(TextView)rootView.findViewById(R.id.numPhotos);
         progressDialog = new ProgressDialog(rootView.getContext());
         SharedPreferences pref = getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        String usuarioActual=pref.getString(R.string.userPreferences+"",null);
+        final String usuarioActual=pref.getString(R.string.userPreferences+"",null);
         if(usuarioActual!=null&&!usuarioActual.equals("")){
 
             String nombre=pref.getString(R.string.nombrePreferences+"",null);
@@ -139,7 +139,7 @@ public class ProfileFragment extends Fragment {
             user= new Usuario(nombre,usuarioActual,correo,cedula,celular,password);
             txtUser.setText(usuarioActual);
             mAuth= FirebaseAuth.getInstance();
-            final FirebaseUser user=mAuth.getCurrentUser();
+            final FirebaseUser userf=mAuth.getCurrentUser();
             mFirebaseInstance = FirebaseDatabase.getInstance();
             mFirebaseDatabase=mFirebaseInstance.getReference().child("pictures");
             // Setting progressDialog Title.
@@ -155,10 +155,16 @@ public class ProfileFragment extends Fragment {
 
                     fotos.clear();
                     for (DataSnapshot noteSnapshot: dataSnapshot.getChildren()){
-
-                        if(noteSnapshot.child("username").getValue().equals(user.getDisplayName()))
+                        Log.d("tag",
+                                "RESULTADO: "+noteSnapshot.getKey()+ " "+noteSnapshot.child("username").getValue());
+                        Log.d("tag",
+                                "RESULTADO: "+noteSnapshot.getKey());
+                        Log.d("tag",
+                                "RESULTADO: "+noteSnapshot.getKey()+user.getUsername());
+                        if(noteSnapshot.child("username").getValue().equals(user.getUsername()))
                         {
-
+                            Log.d("tag",
+                                    "RESULTADO: foto del Usuario "+user.getUsername());
                             Foto foto = noteSnapshot.getValue(Foto.class);
                             fotos.add(foto);
                             txtPublicaciones.setText(fotos.size()+"");

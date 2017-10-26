@@ -46,8 +46,6 @@ public class SelectPhotoActivity extends AppCompatActivity {
             case android.R.id.home:
                 // todo: goto back activity from here
 
-                Intent intent = new Intent(this, HomeActivity.class);
-                startActivity(intent);
                 finish();
                 return true;
 

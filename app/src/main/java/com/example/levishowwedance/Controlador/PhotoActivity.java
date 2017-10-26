@@ -45,7 +45,6 @@ public class PhotoActivity extends AppCompatActivity {
     private EditText input_date;
     private String username;
     private Button button;
-    DB baseDatos;
     Foto foto;
 
     private StorageReference mStorageRef;
@@ -64,7 +63,7 @@ public class PhotoActivity extends AppCompatActivity {
         String usuarioActual=sharedPref.getString(R.string.userPreferences+"",null);
         if(usuarioActual!=null&&!usuarioActual.equals("")) {
 
-            username = sharedPref.getString(R.string.nombrePreferences + "", null);
+            username = sharedPref.getString(R.string.userPreferences + "", null);
             String correo = sharedPref.getString(R.string.correoPreferences + "", null);
             String cedula = sharedPref.getString(R.string.cedulaPreferences + "", null);
             String celular = sharedPref.getString(R.string.celularPreferences + "", null);
@@ -87,7 +86,6 @@ public class PhotoActivity extends AppCompatActivity {
         input_title=(EditText)findViewById(R.id.edit_location);
         button=(Button)findViewById(R.id.button_upload);
 
-        baseDatos= new DB(getActivity().getApplicationContext());
 
         Intent intent = getIntent();
         try {
@@ -106,6 +104,11 @@ public class PhotoActivity extends AppCompatActivity {
 
 
     public void upload(View view){
+        // Setting progressDialog Title.
+        mProgressDialog.setTitle("Subiendo foto...");
+
+        // Showing progressDialog.
+        mProgressDialog.show();
         try {
             if(!input_date.getText().toString().equals("") && !input_location.getText().toString().equals("")
                     &&!input_title.getText().toString().equals("")){
@@ -114,11 +117,7 @@ public class PhotoActivity extends AppCompatActivity {
                 final String location = input_location.getText().toString();
                 final String title = input_title.getText().toString();
 
-                // Setting progressDialog Title.
-                mProgressDialog.setTitle("Subiendo foto...");
 
-                // Showing progressDialog.
-                mProgressDialog.show();
 
 
                 final FirebaseUser user= mAuth.getCurrentUser();
@@ -145,7 +144,6 @@ public class PhotoActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(getApplicationContext(), "La foto no se pudo subir" , Toast.LENGTH_LONG).show();
-                            mProgressDialog.dismiss();
                         }
                     })
                     ;
@@ -153,22 +151,19 @@ public class PhotoActivity extends AppCompatActivity {
                     imageView1.setImageBitmap(bitmap);
                     imageView1.setScaleType(ImageView.ScaleType.FIT_XY);
 
-
-
-                   // baseDatos.insertarFoto(foton);
-                    Intent intent= new Intent(this,HomeActivity.class);
-                    this.finish();
                     mProgressDialog.dismiss();
-                    startActivity(intent);
+                    finish();
                 }else{
+                    mProgressDialog.dismiss();
                     Toast.makeText(getApplicationContext(),R.string.validacion,
                             LENGTH_LONG).show();
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+
             Toast.makeText(getApplicationContext(), "La foto no se pudo subir" , Toast.LENGTH_LONG).show();
             mProgressDialog.dismiss();
+            finish();
         }
     }
 

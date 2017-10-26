@@ -59,7 +59,7 @@
         <EditText android:id="@+id/edit_documento"
             style="@style/Text_Edit"
             android:hint="@string/documento"
-            android:inputType="text"/>
+            android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
